@@ -1,0 +1,65 @@
+
+
+* Playwright.el - Emacs Interface for Playwright
+
+** Introduction
+
+   Playwright.el provides an Emacs interface for the Playwright testing framework, allowing users to run and interact with Playwright tests directly from Emacs. It supports various Playwright commands and offers a convenient popup interface for selecting and executing these commands.
+
+** Installation
+
+*** Manual Installation
+
+    To install Playwright.el manually, clone the repository and add the following to your Emacs configuration:
+
+    #+BEGIN_SRC emacs-lisp
+      (add-to-list 'load-path "/path/to/playwright.el")
+      (require 'playwright)
+    #+END_SRC
+
+    Replace "/path/to/playwright.el" with the actual path to the downloaded directory.
+
+*** Using Package Managers
+
+    Playwright.el is not yet available on MELPA or other package repositories. Future releases aim to support this.
+
+** Usage
+
+   The package offers several commands which can be accessed through a popup menu. Use the shortcut ~C-c p w~ to open the Playwright command popup. Available commands include:
+
+   - Run All Tests: Executes all Playwright tests.
+   - Run Single Test File: Prompts for a test file and runs it.
+   - Run Tests in Headed Mode: Executes tests in headed browsers.
+   - Run Tests in UI Mode: Runs tests in interactive UI mode.
+   - Run Tests in Debug Mode: Executes tests in debug mode with Playwright Inspector.
+
+   Each command opens the output in a separate Emacs buffer, allowing you to view test results directly within Emacs.
+
+** Configuration
+
+   Currently, Playwright.el does not require additional configuration. Future versions may include customizable variables to enhance user experience.
+
+** To-Dos
+
+   - [ ] Add support for additional Playwright CLI '--' options as interactive commands in the popup menu.
+   - [ ] Implement integration with Emacs's compilation-mode for better error and test result navigation.
+   - [ ] Add support for running tests on specific browsers (Chromium, Firefox, WebKit).
+   - [ ] Include customizable Emacs variables for default settings such as default browser or test directory.
+   - [ ] Explore integration with project.el for project-specific Playwright configurations.
+   - [ ] Enhance error handling to provide more informative feedback within Emacs.
+   - [ ] Add support for running tests with different reporter options.
+   - [ ] Test and ensure compatibility with older versions of Emacs.
+   - [ ] Prepare for distribution on MELPA or other Emacs package repositories.
+ 
+** Contributing
+
+Contributions to Playwright.el are welcome. Whether it's adding new features, fixing bugs, or improving documentation, your help is appreciated. Please refer to the repository's CONTRIBUTING guide for more details on how to contribute.
+
+** License
+
+Playwright.el is distributed under the MIT License. See the LICENSE file in the repository for more details.
+
+** Contact
+
+For questions or suggestions regarding Playwright.el, feel free to reach out to the author at martinaloysiusbrignall@gmail.com or open an issue on the GitHub repository.
+
