@@ -2,6 +2,8 @@
 
 * Playwright.el - Emacs Interface for Playwright
 
+https://img.shields.io/badge/Emacs-%237F5AB6.svg?&style=for-the-badge&logo=gnu-emacs&logoColor=white
+
 ** Introduction
 
    Playwright.el provides an Emacs interface for the Playwright testing framework, allowing users to run and interact with Playwright tests directly from Emacs. It supports various Playwright commands and offers a convenient popup interface for selecting and executing these commands.
