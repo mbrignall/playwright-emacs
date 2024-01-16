@@ -1,8 +1,8 @@
 ;;; playwright.el --- Emacs interface for Playwright
 
-;; Author: Your Name <martinaloysiusbrignall@gmail.com>
+;; Author: Martin Brignall <martinaloysiusbrignall@gmail.com>
 ;; Version: 0.1
-;; Package-Requires: ((emacs "29.1")) note: haven't tested on older versions
+;; Package-Requires: ((emacs "29.1"))
 ;; Keywords: tools, convenience
 ;; URL: http://github.com/mbrignall/playwright.el
 
@@ -13,15 +13,34 @@
 
 ;;; Code:
 
+(defun playwright-run-command (command)
+  "Run a Playwright COMMAND."
+  (let ((output-buffer (get-buffer-create "*Playwright Output*")))
+    (with-current-buffer output-buffer
+      (erase-buffer)
+      (insert (format "Running command: %s...\n\n" command)))
+    (shell-command command output-buffer)
+    (display-buffer output-buffer)))
+
 (defun playwright-run-all-tests ()
   "Run all Playwright tests."
   (interactive)
-  (let ((output-buffer (get-buffer-create "*Playwright Tests*")))
-    (with-current-buffer output-buffer
-      (erase-buffer)
-      (insert "Running Playwright tests...\n\n"))
-    (shell-command "npx playwright test" output-buffer)
-    (display-buffer output-buffer)))
+  (playwright-run-command "npx playwright test"))
+
+(defun playwright-run-tests-headed ()
+  "Run all Playwright tests in headed mode."
+  (interactive)
+  (playwright-run-command "npx playwright test --headed"))
+
+(defun playwright-run-tests-ui ()
+  "Run all Playwright tests in UI mode."
+  (interactive)
+  (playwright-run-command "npx playwright test --ui"))
+
+(defun playwright-run-tests-debug ()
+  "Run all Playwright tests in debug mode."
+  (interactive)
+  (playwright-run-command "npx playwright test --debug"))
 
 (defun playwright-run-single-test-file (file)
   "Run a single Playwright test file."
@@ -33,39 +52,6 @@
     (shell-command (format "npx playwright test %s" file) output-buffer)
     (display-buffer output-buffer)))
 
-(defun playwright-run-tests-headed ()
-  "Run all Playwright tests in headed browsers."
-  (interactive)
-  (let ((output-buffer (get-buffer-create "*Playwright Test File*")))
-    (with-current-buffer output-buffer
-      (erase-buffer)
-      (insert "Running Playwright tests in headed browsers...\n\n"))
-    (shell-command "npx playwright test --headed" output-buffer)
-    (display-buffer output-buffer))
-  )
-
-(defun playwright-run-tests-ui ()
-  "Run all Playwright tests in interactive UI mode."
-  (interactive)
-  (let ((output-buffer (get-buffer-create "*Playwright Test File*")))
-    (with-current-buffer output-buffer
-      (erase-buffer)
-      (insert "Running Playwright tests in intereactive UI mode...\n\n"))
-    (shell-command "npx playwright test --headed --ui" output-buffer)
-    (display-buffer output-buffer))
-  )
-
-(defun playwright-run-tests-debug ()
-  "Run all Playwright tests in debug mode."
-  (interactive)
-  (let ((output-buffer (get-buffer-create "*Playwright Test File*")))
-    (with-current-buffer output-buffer
-      (erase-buffer)
-      (insert "Running Playwright tests in debug mode...\n\n"))
-    (shell-command "npx playwright test --headed --debug" output-buffer)
-    (display-buffer output-buffer))
-)
-
 (defun playwright-popup ()
   "Show a popup buffer with Playwright commands."
   (interactive)
@@ -73,19 +59,15 @@
                                   '("Run All Tests"
                                     "Run Single Test File"
                                     "Run Tests in Headed Mode"
-				    "Run Tests in UI Mode"
-				    "Run Tests in Debug Mode"
-                                    ))))
-    (cond ((equal command "Run All Tests") (playwright-run-all-tests))
+                                    "Run Tests in UI Mode"
+                                    "Run Tests in Debug Mode"))))
+    (cond ((equal command "Run All Tests") (call-interactively 'playwright-run-all-tests))
           ((equal command "Run Single Test File") (call-interactively 'playwright-run-single-test-file))
-          ((equal command "Run Tests in Headed Mode") (playwright-run-tests-headed))
-	  ((equal command "Run Tests in UI Mode") (playwright-run-tests-ui))
-	  ((equal command "Run Tests in Debug Mode") (playwright-run-tests-debug))
-          ;; Add more cond clauses for other commands
-          )))
+          ((equal command "Run Tests in Headed Mode") (call-interactively 'playwright-run-tests-headed))
+          ((equal command "Run Tests in UI Mode") (call-interactively 'playwright-run-tests-ui))
+          ((equal command "Run Tests in Debug Mode") (call-interactively 'playwright-run-tests-debug)))))
 
-(global-set-key (kbd "C-c p w") 'playwright-popup)
+(global-set-key (kbd "C-c t a") 'playwright-popup)
 
-(provide 'playwright)
-;;; playwright.el ends here 
-
+(provide 'playwrightold)
+;;; playwright.el ends here
