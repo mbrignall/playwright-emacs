@@ -68,7 +68,7 @@
  
 ** Contributing
 
-Contributions to Playwright.el are welcome. Whether it's adding new features, fixing bugs, or improving documentation, your help is appreciated. Please refer to the repository's CONTRIBUTING guide for more details on how to contribute.
+Contributions to Playwright.el are welcome. Whether it's adding new features, fixing bugs, or improving documentation, your help is appreciated.
 
 ** License
 
@@ -80,4 +80,4 @@ For questions or suggestions regarding Playwright.el, feel free to open an issue
 
 ** Acknowledgements
 
-Special thanks to the contributors and community members who have provided feedback, suggestions, and code contributions to make this project possible.
+The makers of transient.el for making it easy to create popup menus in Emacs and making Magit! Anyone who loves using Emacs.
