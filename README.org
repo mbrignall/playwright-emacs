@@ -1,14 +1,21 @@
 
-
 * Playwright.el - Emacs Interface for Playwright
 
 [[https://github.com/minad/corfu/raw/screenshots/emacs.svg?raw=true]]
 
 ** Introduction
 
-   Playwright.el provides an Emacs interface for the Playwright testing framework, allowing users to run and interact with Playwright tests directly from Emacs. It supports various Playwright commands and offers a convenient popup interface for selecting and executing these commands.
+   Playwright.el provides an Emacs interface for the Playwright testing framework, allowing users to run and interact with Playwright tests directly from Emacs. It supports various Playwright commands and offers a convenient popup interface using transient for selecting and executing these commands.
 
 ** Installation
+
+*** Dependencies
+
+    - Ensure you have Playwright installed in your project or globally. You can install it using npm:
+      #+BEGIN_SRC shell
+      npm i -D @playwright/test
+      #+END_SRC
+    - Emacs version 29.1 or later is required as it's all I've tested it on.
 
 *** Manual Installation
 
@@ -27,13 +34,14 @@
 
 ** Usage
 
-   The package offers several commands which can be accessed through a popup menu. Use the shortcut ~C-c p w~ to open the Playwright command popup. Available commands include:
+   The package offers several commands which can be accessed through a popup menu. Use the shortcut ~C-c t w~ to open the Playwright command popup. Available commands include:
 
    - Run All Tests: Executes all Playwright tests.
    - Run Single Test File: Prompts for a test file and runs it.
    - Run Tests in Headed Mode: Executes tests in headed browsers.
-   - Run Tests in UI Mode: Runs tests in interactive UI mode.
-   - Run Tests in Debug Mode: Executes tests in debug mode with Playwright Inspector.
+   - Run Tests with UI Mode: Runs tests in interactive UI mode.
+   - Run Tests with Debug Mode: Executes tests in debug mode with Playwright Inspector.
+   - Additional options: Allows running tests with specific flags and arguments such as --project, --workers, and custom flags.
 
    Each command opens the output in a separate Emacs buffer, allowing you to view test results directly within Emacs.
 
@@ -43,15 +51,14 @@
 
 ** To-Dos
 
-   - [ ] Add support for additional Playwright CLI '--' options as interactive commands in the popup menu.
-   - [ ] Implement integration with Emacs's compilation-mode for better error and test result navigation.
-   - [ ] Add support for running tests on specific browsers (Chromium, Firefox, WebKit).
-   - [ ] Include customizable Emacs variables for default settings such as default browser or test directory.
    - [ ] Explore integration with project.el for project-specific Playwright configurations.
    - [ ] Enhance error handling to provide more informative feedback within Emacs.
-   - [ ] Add support for running tests with different reporter options.
    - [ ] Test and ensure compatibility with older versions of Emacs.
    - [ ] Prepare for distribution on MELPA or other Emacs package repositories.
+   - [X] Add support for additional Playwright CLI '--' options as interactive commands in the popup menu.
+   - [X] Add support for running tests on specific browsers (Chromium, Firefox, WebKit).
+   - [X] Add support for running tests with different reporter options.
+   - [X] Include customizable Emacs variables for default settings such as default browser or test directory.
  
 ** Contributing
 
@@ -63,5 +70,8 @@ Playwright.el is distributed under the MIT License. See the LICENSE file in the 
 
 ** Contact
 
-For questions or suggestions regarding Playwright.el, feel free to reach out to the author at martinaloysiusbrignall@gmail.com or open an issue on the GitHub repository.
+For questions or suggestions regarding Playwright.el, feel free to open an issue on the repo.
 
+** Acknowledgements
+
+Special thanks to the contributors and community members who have provided feedback, suggestions, and code contributions to make this project possible.

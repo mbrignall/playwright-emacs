@@ -13,61 +13,106 @@
 
 ;;; Code:
 
-(defun playwright-run-command (command)
-  "Run a Playwright COMMAND."
-  (let ((output-buffer (get-buffer-create "*Playwright Output*")))
-    (with-current-buffer output-buffer
-      (erase-buffer)
-      (insert (format "Running command: %s...\n\n" command)))
-    (shell-command command output-buffer)
-    (display-buffer output-buffer)))
+(require 'transient)
 
-(defun playwright-run-all-tests ()
-  "Run all Playwright tests."
-  (interactive)
-  (playwright-run-command "npx playwright test"))
+;; Define transient arguments (flags)
+(transient-define-argument playwright:--debug ()
+  :description "Toggle debug mode"
+  :key "d"
+  :argument "--debug")
 
-(defun playwright-run-tests-headed ()
-  "Run all Playwright tests in headed mode."
-  (interactive)
-  (playwright-run-command "npx playwright test --headed"))
+(transient-define-argument playwright:--headed ()
+  :description "Run tests in headed mode"
+  :key "h"
+  :argument "--headed")
 
-(defun playwright-run-tests-ui ()
-  "Run all Playwright tests in UI mode."
-  (interactive)
-  (playwright-run-command "npx playwright test --ui"))
+(transient-define-argument playwright:--ui ()
+  :description "Run tests in UI mode"
+  :key "u"
+  :argument "--ui")
 
-(defun playwright-run-tests-debug ()
-  "Run all Playwright tests in debug mode."
-  (interactive)
-  (playwright-run-command "npx playwright test --debug"))
+(transient-define-infix playwright:--project ()
+  :description "Set project"
+  :key "p"
+  :class 'transient-option
+  :argument "--project="
+  :reader (lambda (prompt _initial-input _history)
+            (read-string prompt)))
 
-(defun playwright-run-single-test-file (file)
-  "Run a single Playwright test file."
-  (interactive "FSelect a test file: ")
-  (let ((output-buffer (get-buffer-create "*Playwright Test File*")))
-    (with-current-buffer output-buffer
-      (erase-buffer)
-      (insert (format "Running Playwright test file: %s...\n\n" file)))
-    (shell-command (format "npx playwright test %s" file) output-buffer)
-    (display-buffer output-buffer)))
+(transient-define-infix playwright:--workers ()
+  :description "Set number of workers"
+  :key "w"
+  :class 'transient-option
+  :argument "--workers="
+  :reader (lambda (prompt _initial-input _history)
+            (read-string prompt)))
 
-(defun playwright-popup ()
-  "Show a popup buffer with Playwright commands."
-  (interactive)
-  (let ((command (completing-read "Select Playwright Command: "
-                                  '("Run All Tests"
-                                    "Run Single Test File"
-                                    "Run Tests in Headed Mode"
-                                    "Run Tests in UI Mode"
-                                    "Run Tests in Debug Mode"))))
-    (cond ((equal command "Run All Tests") (call-interactively 'playwright-run-all-tests))
-          ((equal command "Run Single Test File") (call-interactively 'playwright-run-single-test-file))
-          ((equal command "Run Tests in Headed Mode") (call-interactively 'playwright-run-tests-headed))
-          ((equal command "Run Tests in UI Mode") (call-interactively 'playwright-run-tests-ui))
-          ((equal command "Run Tests in Debug Mode") (call-interactively 'playwright-run-tests-debug)))))
+(transient-define-infix playwright:--reporter ()
+  :description "Choose a reporter"
+  :key "r"
+  :class 'transient-option
+  :argument "--reporter="
+  :reader (lambda (prompt _initial-input _history)
+            (completing-read prompt '("dot" "list" "line" "json" "null"))))
 
-(global-set-key (kbd "C-c t a") 'playwright-popup)
+(transient-define-argument playwright:-g ()
+  :description "Run tests with a title"
+  :key "g"
+  :class 'transient-option
+  :argument "-g "
+  :reader (lambda (prompt _initial-input _history)
+	    (read-string prompt)))
 
-(provide 'playwrightold)
+(transient-define-infix playwright:--extras ()
+  :description "Additional command options"
+  :key "e"
+:class 'transient-option
+:argument ""
+:reader (lambda (prompt _initial-input _history)
+	  (read-string (concat prompt ": "))))
+
+(defun playwright-run-multiple-test-files (args)
+  "Run a set of Playwright test files specified by ARGS."
+  (interactive (list (transient-args 'playwright)))
+  (let* ((files (read-string "Enter space-separated test files: "))
+         (command (concat "npx playwright test " files " " (string-join args " "))))
+    (compile command)))
+
+;; Define the transient prefix
+(transient-define-prefix playwright ()
+  "Transient for running Playwright commands."
+  ["Arguments"
+   (playwright:--debug)
+   (playwright:--extras)
+   (playwright:--headed)
+   (playwright:-g)
+   (playwright:--project)
+   (playwright:--workers)
+   (playwright:--reporter)
+   (playwright:--ui)
+   ]
+  ["Actions"
+   ("a" "Run all tests" playwright-run-all-tests)
+   ("s" "Run single test file" playwright-run-single-test-file)
+   ("m" "Run multiple test files" playwright-run-multiple-test-files)
+   ])
+
+;; Define functions to run tests
+(defun playwright-run-all-tests (args)
+  "Run all Playwright tests with specified ARGS."
+  (interactive (list (transient-args 'playwright)))
+  (let ((command (concat "npx playwright test " (string-join args " "))))
+    (compile command)))
+
+(defun playwright-run-single-test-file (args)
+  "Run a single Playwright test file with specified ARGS."
+  (interactive (list (transient-args 'playwright)))
+  (let* ((file (expand-file-name (read-file-name "Select a test file: ")))
+         (command (concat "npx playwright test " file " " (string-join args " "))))
+    (compile command)))
+
+;; Bind the transient to a key
+(global-set-key (kbd "C-c t p") 'playwright)
+
+(provide 'playwright)
 ;;; playwright.el ends here
