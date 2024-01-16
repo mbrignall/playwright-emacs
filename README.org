@@ -34,7 +34,7 @@
 
 ** Usage
 
-   The package offers several commands which can be accessed through a popup menu. Use the shortcut ~C-c t w~ to open the Playwright command popup. Available commands include:
+   The package offers several commands which can be accessed through a popup menu. Use the shortcut ~C-c t p~ to open the Playwright command popup. Available commands include:
 
    - Run All Tests: Executes all Playwright tests.
    - Run Single Test File: Prompts for a test file and runs it.
