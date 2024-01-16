@@ -3,6 +3,10 @@
 
 [[https://github.com/minad/corfu/raw/screenshots/emacs.svg?raw=true]]
 
+#+attr_html: :style="display:inline;"
+#+attr_html: :width 150px
+[[./img/pwemacs.png]]
+
 ** Introduction
 
    Playwright.el provides an Emacs interface for the Playwright testing framework, allowing users to run and interact with Playwright tests directly from Emacs. It supports various Playwright commands and offers a convenient popup interface using transient for selecting and executing these commands.
