@@ -16,9 +16,11 @@
 *** Dependencies
 
     - Ensure you have Playwright installed in your project or globally. You can install it using npm:
+      
       #+BEGIN_SRC shell
-      npm i -D @playwright/test
+        npm i -D @playwright/test
       #+END_SRC
+      
     - Emacs version 29.1 or later is required as it's all I've tested it on.
 
 *** Manual Installation
