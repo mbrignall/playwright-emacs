@@ -1,15 +1,32 @@
 ;;; playwright.el --- Emacs interface for Playwright
 
+;; Copyright (C) [2024] [Martin Brignall]
+
 ;; Author: Martin Brignall <martinaloysiusbrignall@gmail.com>
 ;; Version: 0.1
 ;; Package-Requires: ((emacs "29.1"))
 ;; Keywords: tools, convenience
 ;; URL: http://github.com/mbrignall/playwright.el
 
-;;; Commentary:
+;; This file is part of Playwright.el.
 
 ;; This package provides an Emacs interface for the Playwright testing framework.
 ;; It allows you to run Playwright tests and view the results directly from Emacs.
+
+;; Playwright.el is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; Playwright.el is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with Playwright.el.  If not, see <https://www.gnu.org/licenses/>.
+
+;;; Commentary:
 
 ;;; Code:
 
@@ -95,7 +112,15 @@
    ("a" "Run all tests" playwright-run-all-tests)
    ("s" "Run single test file" playwright-run-single-test-file)
    ("m" "Run multiple test files" playwright-run-multiple-test-files)
+   ("r" "Run test reports" playwright-run-test-reports)
    ])
+
+(defun playwright-check-installation ()
+  "Check if Playwright is installed and install it if not."
+  (unless (executable-find "playwright")
+    (when (yes-or-no-p "Playwright is not installed.  Install latest now?")
+      (shell-command "npm init playwright@latest" "*Playwright Installation*")
+      (pop-to-buffer "*Playwright Installation*"))))
 
 ;; Define functions to run tests
 (defun playwright-run-all-tests (args)
@@ -109,6 +134,12 @@
   (interactive (list (transient-args 'playwright)))
   (let* ((file (expand-file-name (read-file-name "Select a test file: ")))
          (command (concat "npx playwright test " file " " (string-join args " "))))
+    (compile command)))
+
+(defun playwright-run-test-reports ()
+  "Run Playwright test reports."
+  (interactive)
+  (let ((command "npx playwright show-report"))
     (compile command)))
 
 ;; Bind the transient to a key

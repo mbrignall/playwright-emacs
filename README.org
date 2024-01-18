@@ -15,13 +15,13 @@
 
 *** Dependencies
 
-    - Ensure you have Playwright installed in your project or globally. You can install it using npm:
+Ensure you have Playwright installed in your project or globally. You can install it using npm:
       
       #+BEGIN_SRC shell
         npm i -D @playwright/test
       #+END_SRC
       
-    - Emacs version 29.1 or later is required as it's all I've tested it on.
+- Emacs version 29.1 or later is required as it's all I've tested it on.
 
 *** Manual Installation
 
@@ -72,7 +72,7 @@ Contributions to Playwright.el are welcome. Whether it's adding new features, fi
 
 ** License
 
-Playwright.el is distributed under the MIT License. See the LICENSE file in the repository for more details.
+Playwright.el is distributed under the GNU General Public License v3.0. See the LICENSE file for more details.
 
 ** Contact
 
